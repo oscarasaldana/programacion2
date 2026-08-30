@@ -140,7 +140,7 @@ double descomponerFecha(int fecha, int dia, int mes, int año) {
     dia = fecha % 100;
     mes = (fecha / 100) % 100;
     año = fecha / 10000;
-    fechaMes = año * 12 + mes + (double) dia / 12;
+    fechaMes = año * 12 + mes + (double) dia / 30;
 
     return fechaMes;
 
