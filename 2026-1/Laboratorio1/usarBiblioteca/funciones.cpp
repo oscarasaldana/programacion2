@@ -94,9 +94,9 @@ void listaMascotasAEsterelizar(const char *nombArch, struct Sistema &sistema) {
     int fecha = 20251010;
     bool noEsApto;
 
-    arch << "----------------------------------------------" << endl;
-    arch << "**** MASCOTAS QUE DEBEN SER ESTERELIZADAS ****" << endl;
-    arch << "----------------------------------------------" << endl;
+    arch << "--------------------------------------------------------" << endl;
+    arch << "********* MASCOTAS QUE DEBEN SER ESTERELIZADAS *********" << endl;
+    arch << "--------------------------------------------------------" << endl;
 
     for (int i = 0; i < sistema.numAtenciones; i++) {
         noEsApto = sistema.arrMascotas[i] <= fecha;
@@ -115,9 +115,9 @@ void imprimirMascotasConAtenciones(const char *nombArch, struct Sistema &sistema
 
     int cont = 0;
 
-    arch << "----------------------------------------------" << endl;
-    arch << "**** LISTADO DE MASCOTAS Y SUS ATENCIONES ****" << endl;
-    arch << "----------------------------------------------" << endl;
+    arch << "--------------------------------------------------------" << endl;
+    arch << "********* LISTADO DE MASCOTAS Y SUS ATENCIONES *********" << endl;
+    arch << "--------------------------------------------------------" << endl;
 
     for (int i = 0; i < sistema.numMascotas; i++) {
         cont = 0;
