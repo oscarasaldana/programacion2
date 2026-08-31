@@ -13,7 +13,7 @@ void cargarMascotas(const char *nombArch, struct Sistema &sistema) {
     ifstream arch(nombArch,ios::in);
     if (not arch.is_open()) {
         cout << "ERROR: No se puedo acceder al archivo " << nombArch << endl;
-        exit(2);
+        exit(1);
     }
 
     struct Mascota mascota {};
@@ -110,7 +110,7 @@ void imprimirMascotasConAtenciones(const char *nombArch, struct Sistema &sistema
     ofstream arch(nombArch,ios::out);
     if (not arch.is_open()) {
         cout << "ERROR: No se pudo crear el archivo " << nombArch << endl;
-        exit(4);
+        exit(5);
     }
 
     int cont = 0;
