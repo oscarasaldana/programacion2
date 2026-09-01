@@ -1,2 +1,2 @@
 # programacion2
-Code for the Programming 2 course taught at PUCP
+Solutions for some labs from the Programming 2 course at PUCP
