@@ -1,15 +1,24 @@
 
-#ifndef USARBIBLIOTECA_PARTE2_FUNCIONES_H
-#define USARBIBLIOTECA_PARTE2_FUNCIONES_H
+#ifndef CREARBIBLIOTECA_PARTE1_OPERADORESSOBRECARGADOS_H
+#define CREARBIBLIOTECA_PARTE1_OPERADORESSOBRECARGADOS_H
 
-void cargarArchivo(const char *, ifstream &);
-void crearArchivo(const char *, ofstream &);
-void cargarInfracciones(ifstream &, int *, struct CadenaCaracteres *, struct CadenaCaracteres *, int &);
-char *leerCadenaExacta(ifstream &, char );
-char *leerCadenaCaracter(ifstream &, char );
-void qsort(int *, struct CadenaCaracteres *, struct CadenaCaracteres *, int , int );
-void cambiar(int *, struct CadenaCaracteres *, struct CadenaCaracteres *, int , int );
-void reporte(ofstream &, int *, struct CadenaCaracteres *,struct CadenaCaracteres *, int );
-int contarCaracteres(char *);
+void operator ! (struct CadenaCaracteres &);
+void operator <= (struct CadenaCaracteres &, const char *);
+void operator <= (struct CadenaCaracteres &, int );
+void operator <= (struct CadenaCaracteres &, struct CadenaCaracteres &);
+void operator += (struct CadenaCaracteres &, const char *);
+bool operator += (struct CadenaCaracteres &, struct CadenaCaracteres &);
+int compare(struct CadenaCaracteres &, const char *);
+bool operator == (struct CadenaCaracteres &, const char *);
+bool operator < (struct CadenaCaracteres &, const char *);
+bool operator > (struct CadenaCaracteres &, const char *);
+int compare(struct CadenaCaracteres &, struct CadenaCaracteres &);
+bool operator == (struct CadenaCaracteres &, struct CadenaCaracteres &);
+bool operator < (struct CadenaCaracteres &, struct CadenaCaracteres &);
+bool operator > (struct CadenaCaracteres &, struct CadenaCaracteres &);
+int operator >> (ifstream &, struct CadenaCaracteres &);
+char *leerCadenaCaracteres(ifstream &, char );
+void operator && (struct CadenaCaracteres &, struct CadenaCaracteres &);
+void operator << (ofstream &, struct CadenaCaracteres &);
 
-#endif //USARBIBLIOTECA_PARTE2_FUNCIONES_H
+#endif //CREARBIBLIOTECA_PARTE1_OPERADORESSOBRECARGADOS_H
