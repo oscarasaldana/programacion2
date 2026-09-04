@@ -1,168 +1,229 @@
 #include <iostream>
-#include <fstream>
 #include <cstring>
-#include <iomanip>
+#include <fstream>
 
 using namespace std;
 
-#include "funciones.h"
 #include "operadoresSobrecargados.h"
 #include "estructura.h"
 
-void cargarArchivo(const char *nombArch, ifstream &arch) {
+void operator ! (struct CadenaCaracteres &cadena) {
 
-    arch.open(nombArch,ios::in);
-    if (not arch.is_open()) {
-        cout << "ERROR: No se pudo acceder al archivo " << nombArch << endl;
-        exit(1);
-    }
+    cadena.cadena = nullptr;
+    cadena.capacidad = 0;
+    cadena.longitud = 0;
 
 }
 
-void crearArchivo(const char *nombArch, ofstream &arch) {
+void operator <= (struct CadenaCaracteres &cadena, const char *cadenaCaracter) {
 
-    arch.open(nombArch,ios::out);
-    if (not arch.is_open()) {
-        cout << "ERROR: No se pudo crear el archivo " << nombArch << endl;
-        exit(2);
-    }
+    cadena.cadena = new char[strlen(cadenaCaracter) + 1];
+    cadena.longitud = strlen(cadenaCaracter) + 1;
+    cadena.capacidad = strlen(cadenaCaracter);
+    strcpy(cadena.cadena,cadenaCaracter);
 
 }
 
-void cargarInfracciones(ifstream &archInfraccion, int *arrDni, struct CadenaCaracteres *arrConductores,
-                        struct CadenaCaracteres *arrPlacas, int &numConductores) {
+void operator <= (struct CadenaCaracteres &cadena, int espacioMemoria) {
 
-    cargarArchivo("CarpetaDeDatos/InfraccionesDeTransito.txt",archInfraccion);
+    cadena.cadena = new char[espacioMemoria];
+    cadena.longitud = espacioMemoria;
+    cadena.capacidad = espacioMemoria - 1;
+    espacioMemoria = 0;
 
-    int codInfraccion;
-    char *cadenaCaracter, caracter;
-    bool primeraCadena;
+}
 
-    numConductores = 0;
-    while (true) {
-        archInfraccion >> arrDni[numConductores];
-        if (archInfraccion.eof()) break;
-        primeraCadena = true;
-        while (true) {
-            archInfraccion >> ws;
-            caracter = archInfraccion.peek();
-            if (caracter >= '0' and caracter <= '9') break;
-            cadenaCaracter = leerCadenaExacta(archInfraccion,' ');
-            if (primeraCadena) {
-                !arrConductores[numConductores];
-                arrConductores[numConductores] <= cadenaCaracter;
-                primeraCadena = false;
-            }else {
-                arrConductores[numConductores] += cadenaCaracter;
-            }
+void operator <= (struct CadenaCaracteres &cadena1, struct CadenaCaracteres &cadena2) {
+
+    if (!cadena1.cadena) {
+        cadena1.cadena = new char[strlen(cadena2.cadena) + 1];
+        strcpy(cadena1.cadena,cadena2.cadena);
+    }else {
+        if (strlen(cadena1.cadena) >= strlen(cadena2.cadena)) {
+            strcpy(cadena1.cadena,cadena2.cadena);
+        }else {
+            cadena1 <= strlen(cadena2.cadena);
+            strcpy(cadena1.cadena,cadena2.cadena);
         }
-        archInfraccion >> codInfraccion;
-        archInfraccion >> ws;
-        cadenaCaracter = leerCadenaCaracter(archInfraccion,'\n');
-        arrPlacas[numConductores] <= cadenaCaracter;
-        numConductores++;
     }
+    cadena1.longitud = cadena2.longitud;
+    cadena1.capacidad = cadena2.capacidad;
 
 }
 
-char *leerCadenaExacta(ifstream &arch, char delim) {
+void operator += (struct CadenaCaracteres &cadena, const char *cadenaCaracter) {
 
-    char cadena[30], *ptrCadena;
+    int espacioEstructura, espacioCadena, espacioTotal;
+    char *ptrCadena;
 
-    arch.getline(cadena,30,delim);
-    if (cadena[0] >= 'a' and cadena[0] <= 'z') cadena[0] -= 'a' - 'A';
-    for (int i = 1; cadena[i] != '\0'; i++) {
-        if (cadena[i] >= 'A' and cadena[i] <= 'Z') cadena[i] += 'a' - 'A';
+    ptrCadena = new char[strlen(cadena.cadena) + 1];
+    strcpy(ptrCadena,cadena.cadena);
+    delete cadena.cadena;
+    espacioEstructura = strlen(ptrCadena);
+    espacioCadena = strlen(cadenaCaracter);
+    espacioTotal = espacioEstructura + espacioCadena;
+    cadena <= espacioTotal + 2;
+    strcpy(cadena.cadena,ptrCadena);
+    strcat(cadena.cadena,"_");
+    strcat(cadena.cadena,cadenaCaracter);
+    cadena.longitud = espacioTotal + 1;
+    cadena.capacidad = espacioTotal;
+
+}
+
+bool operator += (struct CadenaCaracteres &cadena1, struct CadenaCaracteres &cadena2) {
+
+    int espacioCadena1, espacioCadena2, espacioTotal;
+    char *ptrCadena;
+
+    if (!cadena1.cadena) return false;
+    else {
+        ptrCadena = new char[strlen(cadena1.cadena) + 1];
+        strcpy(ptrCadena,cadena1.cadena);
+        delete cadena1.cadena;
+        espacioCadena1 = strlen(cadena1.cadena);
+        espacioCadena2 = strlen(cadena2.cadena);
+        espacioTotal = espacioCadena1 + espacioCadena2;
+        cadena1 <= espacioTotal + 1;
+        strcpy(cadena1.cadena,ptrCadena);
+        strcat(cadena1.cadena," ");
+        strcat(cadena1.cadena,cadena2.cadena);
+        cadena1.longitud = espacioTotal + 1;
+        cadena1.capacidad = espacioTotal;
     }
+    return true;
+
+}
+
+int compare(struct CadenaCaracteres &cadena, const char *cadenaCaracter) {
+
+    int numMemoria;
+
+    numMemoria = strlen(cadena.cadena) + 1;
+    for (int i = 0; i < numMemoria; i++) {
+        if (cadena.cadena[i] >= 'A' and cadena.cadena[i] <= 'Z') cadena.cadena[i] += 'a' - 'A';
+    }
+    return strcmp(cadena.cadena,cadenaCaracter);
+
+}
+
+bool operator == (struct CadenaCaracteres &cadena, const char *cadenaCaracter) {
+
+    int resultado;
+
+    resultado = compare(cadena,cadenaCaracter);
+    if (resultado == 0) return true;
+    else return false;
+
+}
+
+bool operator < (struct CadenaCaracteres &cadena, const char *cadenaCaracter) {
+
+    bool sonIguales =  true;
+
+    sonIguales = cadena == cadenaCaracter;
+    if (sonIguales) return true;
+    else return false;
+
+}
+
+bool operator > (struct CadenaCaracteres &cadena, const char *cadenaCaracter) {
+
+    int sonIguales = true;
+
+    sonIguales = cadena < cadenaCaracter;
+    if (sonIguales) return true;
+    else return false;
+
+
+}
+
+int compare(struct CadenaCaracteres &cadena1, struct CadenaCaracteres &cadena2) {
+
+    int numMemoria1, numMemoria2;
+
+    numMemoria1 = strlen(cadena1.cadena) + 1;
+    for (int i = 0; i < numMemoria1; i++) {
+        if (cadena1.cadena[i] >= 'A' and cadena1.cadena[i] <= 'Z') cadena1.cadena[i] += 'a' - 'A';
+    }
+    numMemoria2 = strlen(cadena2.cadena) + 1;
+    for (int i = 0; i < numMemoria2; i++) {
+        if (cadena2.cadena[i] >= 'A' and cadena2.cadena[i] <= 'Z') cadena2.cadena[i] += 'a' - 'A';
+    }
+    return strcmp(cadena1.cadena,cadena2.cadena);
+
+}
+
+bool operator == (struct CadenaCaracteres &cadena1, struct CadenaCaracteres &cadena2) {
+
+    int resultado;
+
+    resultado = compare(cadena1,cadena2);
+    if (resultado == 0) return true;
+    else return false;
+
+}
+
+bool operator < (struct CadenaCaracteres &cadena1, struct CadenaCaracteres &cadena2) {
+
+    bool sonIguales = true;
+
+    sonIguales = cadena1 == cadena2;
+    if (sonIguales == true) return true;
+    else return false;
+
+}
+
+bool operator > (struct CadenaCaracteres &cadena1, struct CadenaCaracteres &cadena2) {
+
+    bool sonIguales = true;
+
+    sonIguales = cadena1 < cadena2;
+    if (sonIguales == true) return true;
+    else return false;
+
+}
+
+int operator >> (ifstream &arch, struct CadenaCaracteres &cadena) {
+
+    cadena.cadena = leerCadenaCaracteres(arch,' ');
+    if (!cadena.cadena) return 1;
+    if (strcmp(cadena.cadena,"-") == 0) return -1;
+    else return 0;
+
+}
+
+char *leerCadenaCaracteres(ifstream &arch, char delim) {
+
+    char cadena[50], *ptrCadena, caracter;
+
+    caracter = arch.peek();
+    arch.getline(cadena,50,delim);
     if (arch.eof()) return nullptr;
-    ptrCadena = new char[strlen(cadena) + 1];
-    strcpy(ptrCadena,cadena);
+    if ((caracter >= 'a' and caracter <= 'z') or (caracter >= 'A' and caracter <= 'Z')) {
+        ptrCadena = new char[strlen(cadena) + 1];
+        strcpy(ptrCadena,cadena);
+    }else {
+        ptrCadena = new char[2];
+        strcpy(ptrCadena,"-");
+    }
 
     return ptrCadena;
 
 }
 
-char *leerCadenaCaracter(ifstream &arch, char delim) {
+void operator && (struct CadenaCaracteres &cadena1, struct CadenaCaracteres &cadena2) {
 
-    char cadena[30], *ptrCadena;
+    struct CadenaCaracteres cadenaAux {};
 
-    arch.getline(cadena,30,delim);
-    if (arch.eof()) return nullptr;
-    ptrCadena = new char[strlen(cadena) + 1];
-    strcpy(ptrCadena,cadena);
-
-    return ptrCadena;
+    cadenaAux = cadena1;
+    cadena1 = cadena2;
+    cadena2 = cadenaAux;
 
 }
 
-void qsort(int *arrDni, struct CadenaCaracteres *arrConductores, struct CadenaCaracteres *arrPlacas,
-           int inicio, int final) {
+void operator << (ofstream &arch, struct CadenaCaracteres &cadena) {
 
-    int medio, puntero;
-
-    if (inicio >= final) return;
-
-    medio = (inicio + final) / 2;
-    puntero = inicio;
-    cambiar(arrDni,arrConductores,arrPlacas,inicio,medio);
-    for (int i = inicio + 1; i <= final; i++) {
-        if (strcmp(arrConductores[i].cadena,arrConductores[inicio].cadena) < 0) {
-            puntero++;
-            cambiar(arrDni,arrConductores,arrPlacas,i,puntero);
-        }
-    }
-    cambiar(arrDni,arrConductores,arrPlacas,inicio,puntero);
-    qsort(arrDni,arrConductores,arrPlacas,inicio,puntero - 1);
-    qsort(arrDni,arrConductores,arrPlacas,puntero + 1,final);
-
-}
-
-void cambiar(int *arrDni, struct CadenaCaracteres *arrConductores, struct CadenaCaracteres *arrPlacas,
-             int a, int b) {
-
-    int dniAux;
-
-    dniAux = arrDni[a];
-    arrDni[a] = arrDni[b];
-    arrDni[b] = dniAux;
-
-    arrConductores[a] && arrConductores[b];
-
-    arrPlacas[a] && arrPlacas[b];
-
-}
-
-void reporte(ofstream &archReporte, int *arrDni, struct CadenaCaracteres *arrConductores,
-             struct CadenaCaracteres *arrPlacas, int numConductores) {
-
-    int contador;
-
-    crearArchivo("CarpetaDeReportes/ReporteDeTransito",archReporte);
-
-    archReporte << setw(50) << "REPORTE DE INFRACCIONES DE TRANSITO" << endl;
-    archReporte << setfill('=') << setw(70) << "=" << setfill(' ') << endl;
-    archReporte << "DNI" << setw(25) << "INFRACTOR" << setw(35) << "PLACA" << endl;
-    archReporte << setfill('-') << setw(70) << "-" << setfill(' ') << endl;
-
-    for (int i = 0; i < numConductores; i++) {
-        archReporte << arrDni[i] << setw(5) << " ";
-        archReporte << arrConductores[i];
-        contador = contarCaracteres(arrConductores[i].cadena);
-        archReporte << setw(51 - contador);
-        archReporte << arrPlacas[i];
-        archReporte << endl;
-    }
-
-}
-
-int contarCaracteres(char *cadena) {
-
-    int contador = 0;
-
-    for (int i = 0; cadena[i] != '\0'; i++) {
-        contador++;
-    }
-
-    return contador;
+    arch << cadena.cadena;
 
 }
