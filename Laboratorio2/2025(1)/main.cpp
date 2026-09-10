@@ -8,9 +8,7 @@ using namespace std;
 #include "biblioteca/faltas.h"
 
 int main() {
-
-    struct Conductores conductor {};
-    struct Infracciones infraccion {};
+    
     struct Faltas falta {};
 
     cargarFaltasDeLosConductores("CarpetaDeDatos/Faltas.csv","CarpetaDeDatos/Conductores.csv",
