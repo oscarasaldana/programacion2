@@ -3,9 +3,7 @@
 using namespace std;
 
 #include "biblioteca/funciones.h"
-#include "estructuras/conductores.h"
 #include "estructuras/faltas.h"
-#include "estructuras/infracciones.h"
 
 int main() {
 
