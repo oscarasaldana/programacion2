@@ -1,22 +1,27 @@
 
-#ifndef CODIGO_PROCESA_H
-#define CODIGO_PROCESA_H
+#ifndef CODIGO_PILA_H
+#define CODIGO_PILA_H
 
-#include "../pila/pila.h"
+#include "../operacion/operaciones.h"
 
-class Procesa {
+class Pila {
 
 private:
-    class Pila pilaOperaciones;
+    class Operaciones arrPila[900];
+    int cantidad;
 
 public:
-    Procesa();
-    ~Procesa();
+    Pila();
+    ~Pila();
 
-    void cargarOperaciones(const char *);
-    void descargaOperaciones(int , int );
-    void imprimeOperaciones(const char *);
+    int obtenerCantidad();
+    void apilar(class Operaciones &);
+    void desapilar();
+    bool esPilaVacia();
+    int cima();
+    void mostrarDatos(ofstream &);
 
 };
 
-#endif //CODIGO_PROCESA_H
+#endif //CODIGO_PILA_H
+
