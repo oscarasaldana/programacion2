@@ -14,6 +14,7 @@ Operaciones::Operaciones() {
     tipo = nullptr;
 
 }
+
 Operaciones::~Operaciones() {
 
     liberarEspacio();
