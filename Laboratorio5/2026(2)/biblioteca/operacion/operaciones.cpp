@@ -36,7 +36,7 @@ void Operaciones::cargarCodigo(int dato) {
 
 }
 
-int Operaciones::obtenerCodigo() {
+int Operaciones::obtenerCodigo() const {
 
     return this->codigo;
 
@@ -48,7 +48,7 @@ void Operaciones::cargarCliente(int dato) {
 
 }
 
-int Operaciones::obtenerCliente() {
+int Operaciones::obtenerCliente() const {
 
     return this->cliente;
 
@@ -60,7 +60,7 @@ void Operaciones::cargarFecha(int dato) {
 
 }
 
-int Operaciones::obtenerFecha() {
+int Operaciones::obtenerFecha() const {
 
     return this->fecha;
 
@@ -74,7 +74,7 @@ void Operaciones::cargarCanal(char *cadena) {
 
 }
 
-void Operaciones::obtenerCanal(char *cadena) {
+void Operaciones::obtenerCanal(char *cadena) const {
 
     if (!canal) cadena[0] = 0;
     else strcpy(cadena,this->canal);
@@ -89,7 +89,7 @@ void Operaciones::cargarTipo(char *cadena) {
 
 }
 
-void Operaciones::obtenerTipo(char *cadena) {
+void Operaciones::obtenerTipo(char *cadena) const {
 
     if (!tipo) cadena[0] = 0;
     else strcpy(cadena,this->tipo);
