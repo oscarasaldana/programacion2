@@ -17,15 +17,15 @@ public:
 
     void liberarEspacio();
     void cargarCodigo(int );
-    int obtenerCodigo();
+    int obtenerCodigo() const;
     void cargarCliente(int );
-    int obtenerCliente();
+    int obtenerCliente() const;
     void cargarFecha(int );
-    int obtenerFecha();
+    int obtenerFecha() const;
     void cargarCanal(char *);
-    void obtenerCanal(char *);
+    void obtenerCanal(char *) const;
     void cargarTipo(char *);
-    void obtenerTipo(char *);
+    void obtenerTipo(char *) const;
 
 };
 
