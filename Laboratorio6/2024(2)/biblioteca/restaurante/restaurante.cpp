@@ -9,13 +9,15 @@ using namespace std;
 #include "../plato/plato.h"
 #include "restaurante.h"
 
+#define Incremento (5)
+
 Restaurante::Restaurante() {
 
     listaDeClientes = nullptr;
     listaDePlatos = nullptr;
     numClientes = 0;
     numPlatos = 0;
-    capacidadPlatos = 0;
+    capacidadPlatos = 1;
 
 }
 
@@ -91,37 +93,51 @@ void Restaurante::operator <= (const char *nombArch) {
         exit(1);
     }
 
-    class Plato platos[150];
+    while (true) {
+        if (numPlatos == capacidadPlatos - 1) incrementarCapacidadPlatos();
+        arch >> listaDePlatos[numPlatos];
+        if (arch.eof()) break;
+        numPlatos++;
+    }
+
+}
+
+void Restaurante::incrementarCapacidadPlatos() {
+
+    class Plato *platos;
 
     int numPlatosPreparados;
     double precio, descuento, gananciaEsperada;
     char codigo[30] {}, nombre[50] {}, categoria[30] {};
 
-    while (true) {
-        arch >> platos[numPlatos];
-        if (arch.eof()) break;
-        numPlatos++;
+    capacidadPlatos += Incremento;
+    if (!listaDePlatos) {
+        listaDePlatos = new Plato [capacidadPlatos];
     }
-    listaDePlatos = new Plato [numPlatos];
-    for (int i = 0; i < numPlatos; i++) {
-        platos[i].obtenerCodigo(codigo);
-        platos[i].obtenerNombre(nombre);
-        platos[i].obtenerPrecio(precio);
-        platos[i].obtenerCategoria(categoria);
-        platos[i].obtenerPreparados(numPlatosPreparados);
-        platos[i].obtenerDescuento(descuento);
-        platos[i].obtenerTotalEsperado(gananciaEsperada);
-        listaDePlatos[i].cargarCodigo(codigo);
-        listaDePlatos[i].cargarNombre(nombre);
-        listaDePlatos[i].cargarPrecio(precio);
-        listaDePlatos[i].cargarCategoria(categoria);
-        listaDePlatos[i].cargarPreparados(numPlatosPreparados);
-        listaDePlatos[i].cargarDescuento(descuento);
-        listaDePlatos[i].cargarAtendidos(0);
-        listaDePlatos[i].cargarNoAtendidos(0);
-        listaDePlatos[i].cargarTotalEsperado(gananciaEsperada);
-        listaDePlatos[i].cargarTotalBruto(0);
-        listaDePlatos[i].cargarTotalNeto(0);
+    else {
+        platos = new Plato [capacidadPlatos];
+        for (int i = 0; i < numPlatos; i++) {
+            listaDePlatos[i].obtenerCodigo(codigo);
+            listaDePlatos[i].obtenerNombre(nombre);
+            listaDePlatos[i].obtenerPrecio(precio);
+            listaDePlatos[i].obtenerCategoria(categoria);
+            listaDePlatos[i].obtenerPreparados(numPlatosPreparados);
+            listaDePlatos[i].obtenerDescuento(descuento);
+            listaDePlatos[i].obtenerTotalEsperado(gananciaEsperada);
+            platos[i].cargarCodigo(codigo);
+            platos[i].cargarNombre(nombre);
+            platos[i].cargarPrecio(precio);
+            platos[i].cargarCategoria(categoria);
+            platos[i].cargarPreparados(numPlatosPreparados);
+            platos[i].cargarDescuento(descuento);
+            platos[i].cargarTotalEsperado(gananciaEsperada);
+            platos[i].cargarAtendidos(0);
+            platos[i].cargarNoAtendidos(0);
+            platos[i].cargarTotalBruto(0);
+            platos[i].cargarTotalNeto(0);
+        }
+        delete [] listaDePlatos;
+        listaDePlatos = platos;
     }
 
 }
