@@ -24,6 +24,7 @@ public:
     void operator <= (const char *);
     void operator <<= (const char *);
 
+    void incrementarCapacidadPlatos();
     int encontrarPosicionCliente(int );
     int encontrarPosicionPlato(const char *);
 
