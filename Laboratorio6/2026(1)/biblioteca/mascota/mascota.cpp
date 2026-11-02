@@ -31,9 +31,9 @@ void Mascota::cargarDni(int dato) {
 
 }
 
-void Mascota::obtenerDni(int &dato) const {
+int Mascota::obtenerDni() const {
 
-    dato = this->dni;
+    return this->dni;
 
 }
 
@@ -73,9 +73,9 @@ void Mascota::cargarEdad(int dato) {
 
 }
 
-void Mascota::obtenerEdad(int &dato) const {
+int Mascota::obtenerEdad() const {
 
-    dato = this->edad;
+    return this->edad;
 
 }
 
@@ -85,9 +85,9 @@ void Mascota::cargarPeso(double dato) {
 
 }
 
-void Mascota::obtenerPeso(double &dato) const {
+double Mascota::obtenerPeso() const {
 
-    dato = this->peso;
+    return this->peso;
 
 }
 
@@ -132,17 +132,13 @@ void operator >> (ifstream &arch, class Mascota &mascota) {
 
 void Mascota::operator += (const class Vacuna &vacuna) {
 
-    int fechaCita;
-    double cantidadDosis;
     char nombreVacuna[50] {}, veterinario[50] {};
 
     vacuna.obtenerNombre(nombreVacuna);
-    vacuna.obtenerFecha(fechaCita);
-    vacuna.obtenerDosis(cantidadDosis);
     vacuna.obtenerColegiatura(veterinario);
     listaDeVacunas[numVacunas].cargarNombre(nombreVacuna);
-    listaDeVacunas[numVacunas].cargarFecha(fechaCita);
-    listaDeVacunas[numVacunas].cargarDosis(cantidadDosis);
+    listaDeVacunas[numVacunas].cargarFecha(vacuna.obtenerFecha());
+    listaDeVacunas[numVacunas].cargarDosis(vacuna.obtenerDosis());
     listaDeVacunas[numVacunas].cargarColegiatura(veterinario);
     numVacunas++;
 
@@ -150,22 +146,18 @@ void Mascota::operator += (const class Vacuna &vacuna) {
 
 bool Mascota::operator ~ () const{
 
-    int fechaCita, fechaCitaSiguiente;
-    double cantidadDosis, cantidadDosisSiguiente;
     char nombreVacuna[50] {}, nombreVacunaSiguiente[50] {};
     char veterinario[50] {}, veterinarioSiguiente[50]{};
 
     for (int i = 0; i < numVacunas; i++) {
         listaDeVacunas[i].obtenerNombre(nombreVacuna);
-        listaDeVacunas[i].obtenerFecha(fechaCita);
-        listaDeVacunas[i].obtenerDosis(cantidadDosis);
         listaDeVacunas[i].obtenerColegiatura(veterinario);
         listaDeVacunas[i + 1].obtenerNombre(nombreVacunaSiguiente);
-        listaDeVacunas[i + 1].obtenerFecha(fechaCitaSiguiente);
-        listaDeVacunas[i + 1].obtenerDosis(cantidadDosisSiguiente);
         listaDeVacunas[i + 1].obtenerColegiatura(veterinarioSiguiente);
-        if (strcmp(nombreVacuna,nombreVacunaSiguiente) == 0 and fechaCita == fechaCitaSiguiente and
-            strcmp(veterinario,veterinarioSiguiente) == 0 and cantidadDosis == cantidadDosisSiguiente) {
+        if (strcmp(nombreVacuna,nombreVacunaSiguiente) == 0 and
+            listaDeVacunas[i].obtenerFecha() == listaDeVacunas[i + 1].obtenerFecha() and
+            strcmp(veterinario,veterinarioSiguiente) == 0 and
+            listaDeVacunas[i].obtenerDosis() == listaDeVacunas[i + 1].obtenerDosis()) {
             return true;
         }
     }
@@ -173,19 +165,14 @@ bool Mascota::operator ~ () const{
 
 }
 
-void operator << (ofstream &arch, class Mascota &mascota) {
+void operator << (ofstream &arch, const class Mascota &mascota) {
 
-    int edadMascota, numVacunas;
-    double pesoMascota;
     char nombreMascota[50] {}, especieMascota[50] {};
 
     mascota.obtenerNombre(nombreMascota);
     mascota.obtenerEspecie(especieMascota);
-    mascota.obtenerEdad(edadMascota);
-    mascota.obtenerPeso(pesoMascota);
-
     arch << "Mascota: " << nombreMascota << " (" << especieMascota << ", "
-         << edadMascota << " años, " << pesoMascota << "kg)" << endl
+         << mascota.obtenerEdad() << " años, " << mascota.obtenerPeso() << "kg)" << endl
     ;
     if (~mascota) {
         arch << " ** ALERTA: Cartilla con registros duplicados ** " << endl << endl;
@@ -194,7 +181,7 @@ void operator << (ofstream &arch, class Mascota &mascota) {
 
 }
 
-void Mascota::imprimirVacunas(ofstream &arch) {
+void Mascota::imprimirVacunas(ofstream &arch) const {
 
     for (int i = 0; i < numVacunas; i++) {
         arch << listaDeVacunas[i];
