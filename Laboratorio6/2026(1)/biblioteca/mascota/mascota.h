@@ -22,19 +22,19 @@ public:
     ~Mascota();
 
     void cargarDni(int );
-    void obtenerDni(int &) const;
+    int obtenerDni() const;
     void cargarNombre(char *);
     void obtenerNombre(char *) const;
     void cargarEspecie(char *);
     void obtenerEspecie(char *) const;
     void cargarEdad(int );
-    void obtenerEdad(int &) const;
+    int obtenerEdad() const;
     void cargarPeso(double );
-    void obtenerPeso(double &) const;
+    double obtenerPeso() const;
     void cargarColegiatura(char *);
     void obtenerColegiatura(char *) const;
 
-    void imprimirVacunas(ofstream &);
+    void imprimirVacunas(ofstream &) const;
 
     void operator += (const class Vacuna &);
     bool operator ~ () const;
@@ -42,6 +42,6 @@ public:
 };
 
 void operator >> (ifstream &, class Mascota &);
-void operator << (ofstream &, class Mascota &);
+void operator << (ofstream &, const class Mascota &);
 
 #endif //CODIGO_MASCOTA_H
