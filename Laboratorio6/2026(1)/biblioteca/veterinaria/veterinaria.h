@@ -14,12 +14,12 @@ public:
     Veterinaria();
     ~Veterinaria();
 
-    void obtenerNumMascotas(int &) const;
-    int posicionEncontrada(char *, int ) const;
+    int obtenerNumMascotas() const;
+    int posicionEncontrada(const char *, int ) const;
 
     void operator <= (const char *);
     void operator <<= (const char *);
-    void operator << (const char *);
+    void operator << (const char *) const;
 
 };
 
