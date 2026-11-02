@@ -17,9 +17,9 @@ public:
     void cargarNombre(char *);
     void obtenerNombre(char *) const;
     void cargarFecha(int );
-    void obtenerFecha(int &) const;
+    int obtenerFecha() const;
     void cargarDosis(double );
-    void obtenerDosis(double &) const;
+    double obtenerDosis() const;
     void cargarColegiatura(char *);
     void obtenerColegiatura(char *) const;
 
