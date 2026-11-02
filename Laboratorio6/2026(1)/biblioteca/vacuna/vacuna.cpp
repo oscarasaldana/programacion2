@@ -44,9 +44,9 @@ void Vacuna::cargarFecha(int dato) {
 
 }
 
-void Vacuna::obtenerFecha(int &dato) const {
+int Vacuna::obtenerFecha() const {
 
-    dato = this->fecha;
+    return this->fecha;
 
 }
 
@@ -56,9 +56,9 @@ void Vacuna::cargarDosis(double dato) {
 
 }
 
-void Vacuna::obtenerDosis(double &dato) const {
+double Vacuna::obtenerDosis() const {
 
-    dato = this->dosis;
+    return this->dosis;
 
 }
 
@@ -99,18 +99,14 @@ void operator >> (ifstream &arch, class Vacuna &vacuna) {
 
 void operator << (ofstream &arch, const class Vacuna &vacuna) {
 
-    int fechaCita;
-    double cantidadDosis;
     char nombreVacuna[50] {}, veterinario[50] {};
 
     vacuna.obtenerNombre(nombreVacuna);
-    vacuna.obtenerFecha(fechaCita);
-    vacuna.obtenerDosis(cantidadDosis);
     vacuna.obtenerColegiatura(veterinario);
 
     arch << setw(3) << " " << " - " << nombreVacuna << " " << setfill('0') << setw(2)
-         << fechaCita % 100 << "/" << setw(2) << (fechaCita / 100) % 100 << "/"
-         << setw(2) << fechaCita / 10000 << setfill(' ') << " (" << cantidadDosis << "ml, "
+         << vacuna.obtenerFecha() % 100 << "/" << setw(2) << (vacuna.obtenerFecha() / 100) % 100 << "/"
+         << setw(2) << vacuna.obtenerFecha() / 10000 << setfill(' ') << " (" << vacuna.obtenerDosis() << "ml, "
          << veterinario << ")" << endl
     ;
 
