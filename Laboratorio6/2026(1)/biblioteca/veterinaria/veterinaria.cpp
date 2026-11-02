@@ -22,9 +22,9 @@ Veterinaria::~Veterinaria() {
 
 }
 
-void Veterinaria::obtenerNumMascotas(int &dato) const {
+int Veterinaria::obtenerNumMascotas() const {
 
-    dato = this->numMascotas;
+    return this->numMascotas;
 
 }
 
@@ -40,8 +40,6 @@ void Veterinaria::operator <= (const char *nombArch) {
 
     class Mascota mascotas[50];
 
-    int dniCliente, edadMascota;
-    double pesoMascota;
     char nombreMascota[50] {}, especieMascota[50] {}, veterinario[50] {};
 
     while (true) {
@@ -51,17 +49,14 @@ void Veterinaria::operator <= (const char *nombArch) {
     }
     listaDeMascotas = new Mascota [numMascotas];
     for (int i = 0; i < numMascotas; i++) {
-        mascotas[i].obtenerDni(dniCliente);
         mascotas[i].obtenerNombre(nombreMascota);
         mascotas[i].obtenerEspecie(especieMascota);
-        mascotas[i].obtenerEdad(edadMascota);
-        mascotas[i].obtenerPeso(pesoMascota);
         mascotas[i].obtenerColegiatura(veterinario);
-        listaDeMascotas[i].cargarDni(dniCliente);
+        listaDeMascotas[i].cargarDni(mascotas[i].obtenerDni());
         listaDeMascotas[i].cargarNombre(nombreMascota);
         listaDeMascotas[i].cargarEspecie(especieMascota);
-        listaDeMascotas[i].cargarEdad(edadMascota);
-        listaDeMascotas[i].cargarPeso(pesoMascota);
+        listaDeMascotas[i].cargarEdad(mascotas[i].obtenerEdad());
+        listaDeMascotas[i].cargarPeso(mascotas[i].obtenerPeso());
         listaDeMascotas[i].cargarColegiatura(veterinario);
     }
 
@@ -95,21 +90,19 @@ void Veterinaria::operator <<= (const char *nombArch) {
 
 }
 
-int Veterinaria::posicionEncontrada(char *nombre, int dni) const {
+int Veterinaria::posicionEncontrada(const char *nombre, const int dni) const {
 
-    int dniCliente;
     char nombreMascota[50] {};
 
     for (int i = 0; i < numMascotas; i++) {
-        listaDeMascotas[i].obtenerDni(dniCliente);
         listaDeMascotas[i].obtenerNombre(nombreMascota);
-        if (strcmp(nombreMascota,nombre) == 0 and dniCliente == dni) return i;
+        if (strcmp(nombreMascota,nombre) == 0 and listaDeMascotas[i].obtenerDni() == dni) return i;
     }
     return -1;
 
 }
 
-void Veterinaria::operator << (const char *nombArch) {
+void Veterinaria::operator << (const char *nombArch) const {
 
     ofstream arch;
 
@@ -119,18 +112,17 @@ void Veterinaria::operator << (const char *nombArch) {
         exit(2);
     }
 
-    int dniCliente, dni = 0;
+    int dni = 0;
 
     arch << setfill('=') << setw(55) << "=" << setfill(' ') << endl;
     arch << "REPORTE DE CARTILLAS - VETERINARIA HUELLITAS Y PLUMITAS" << endl;
     arch << setfill('=') << setw(55) << "=" << setfill(' ') << endl;
     for (int i = 0; i < numMascotas; i++) {
-        listaDeMascotas[i].obtenerDni(dniCliente);
-        if (dniCliente != dni) {
-            arch << "DNI: " << dniCliente << endl;
+        if (listaDeMascotas[i].obtenerDni() != dni) {
+            arch << "DNI: " << listaDeMascotas[i].obtenerDni() << endl;
         }
         arch << listaDeMascotas[i];
-        dni = dniCliente;
+        dni = listaDeMascotas[i].obtenerDni();
     }
 
 }
